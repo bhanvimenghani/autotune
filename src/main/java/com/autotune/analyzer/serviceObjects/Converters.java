@@ -5,9 +5,7 @@ import com.autotune.analyzer.kruizeObject.*;
 import com.autotune.analyzer.performanceProfiles.PerformanceProfile;
 import com.autotune.analyzer.recommendations.ContainerRecommendations;
 import com.autotune.analyzer.recommendations.NamespaceRecommendations;
-import com.autotune.analyzer.recommendations.engine.RecommendationEngine;
 import com.autotune.analyzer.recommendations.objects.MappedRecommendationForTimestamp;
-import com.autotune.analyzer.recommendations.term.Terms;
 import com.autotune.analyzer.utils.AnalyzerConstants;
 import com.autotune.common.data.ValidationOutputData;
 import com.autotune.common.data.metrics.AggregationFunctions;
@@ -71,39 +69,6 @@ public class Converters {
                 }
                 // TODO : some modification to add custom terms and models automatically here
 
-//                RecommendationSettings recommendationSettings = new RecommendationSettings();
-//                RecommendationAPIObject recommendationAPIObject = createExperimentAPIObject.getRecommendationSettings();
-//                // Process the threshold value (can be null or a default value in case it's missing)
-//                String threshold = recommendationAPIObject.getThreshold();
-//                recommendationSettings.setThreshold(threshold);
-//
-//                // Process the model settings (models is an array)
-//                ModelSettings modelSettings = recommendationAPIObject.getModelSettings();
-//                if (modelSettings != null && modelSettings.getModels() != null) {
-//                    recommendationSettings.setModels(modelSettings.getModels());
-//                }
-//
-//                // Process the term settings
-//                TermSettings termSettings = recommendationAPIObject.getTermSettings();
-//                if (termSettings != null) {
-//                    // Extract the terms array (if available)
-//                    List<String> terms = termSettings.getTerms();
-//                    recommendationSettings.setTerms(terms);
-//
-//                    // Extract individual terms with their values (like "short" => "1 day")
-//                    Map<String, String> termValues = new HashMap<>();
-//                    if (terms != null && !terms.isEmpty()) {
-//                        for (String term : terms) {
-//                            String value = termSettings.getTermValue(term); // Fetch value based on term name (e.g., "short" => "1 day")
-//                            termValues.put(term, value);
-//                        }
-//                    }
-//                    recommendationSettings.setTermValues(termValues);
-//                }
-//
-//                // Return the fully populated RecommendationSettings object
-//                return recommendationSettings;
-
                 kruizeObject.setKubernetes_objects(k8sObjectList);
                 kruizeObject.setExperimentName(createExperimentAPIObject.getExperimentName());
                 kruizeObject.setApiVersion(createExperimentAPIObject.getApiVersion());
@@ -120,6 +85,7 @@ public class Converters {
                 recommendationSettings.setTermSettings(termSettings);
                 ModelSettings modelSettings = createExperimentAPIObject.getRecommendationSettings().getModelSettings();
                 recommendationSettings.setModelSettings(modelSettings);
+//                recommendationSettings.setThreshold(createExperimentAPIObject.getRecommendationSettings().getThreshold());
                 kruizeObject.setRecommendation_settings(recommendationSettings);
                 kruizeObject.setExperiment_id(createExperimentAPIObject.getExperiment_id());
                 kruizeObject.setStatus(createExperimentAPIObject.getStatus());
