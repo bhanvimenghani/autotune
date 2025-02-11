@@ -147,7 +147,7 @@ public class RecommendationEngine {
 
         RecommendationSettings recommendationSettings = kruizeObject.getRecommendation_settings();
         List<String> models = new ArrayList<>() ;
-        models.add("performance");
+        models.add(KruizeConstants.JSONKeys.PERFORMANCE);
         ModelSettings modelSettings = new ModelSettings();
         modelSettings.setModels(models);
         recommendationSettings.setModelSettings(modelSettings);
@@ -158,11 +158,11 @@ public class RecommendationEngine {
         // Add new models
         recommendationModels = new ArrayList<>();
         for (String model : modelName) {
-            if ("cost".equalsIgnoreCase(model)) {
+            if (KruizeConstants.JSONKeys.COST.equalsIgnoreCase(model)) {
                 // Create Cost based model
                 CostBasedRecommendationModel costBasedRecommendationModel = new CostBasedRecommendationModel();
                 registerModel(costBasedRecommendationModel);
-            } else if ("performance".equalsIgnoreCase(model)) {
+            } else if (KruizeConstants.JSONKeys.PERFORMANCE.equalsIgnoreCase(model)) {
                 // Create Performance based model
                 PerformanceBasedRecommendationModel performanceBasedRecommendationModel = new PerformanceBasedRecommendationModel();
                 registerModel(performanceBasedRecommendationModel);
