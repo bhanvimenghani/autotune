@@ -1,4 +1,3 @@
-"Hi im bhanvi testing github workflow on master branch"
 
 # Kruize Autotune - Autonomous Performance Tuning for Kubernetes !
 
