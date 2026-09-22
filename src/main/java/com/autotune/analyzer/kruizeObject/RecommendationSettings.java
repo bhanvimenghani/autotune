@@ -18,12 +18,17 @@ package com.autotune.analyzer.kruizeObject;
 import com.autotune.utils.KruizeConstants;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class RecommendationSettings {
     private Double threshold;
     @SerializedName(KruizeConstants.JSONKeys.MODEL_SETTINGS)
     private ModelSettings modelSettings;
     @SerializedName(KruizeConstants.JSONKeys.TERM_SETTINGS)
     private TermSettings termSettings;
+    // Flat list fields accepted directly in recommendation_settings (e.g. "terms": ["flex"])
+    private List<String> terms;
+    private List<String> models;
 
     public RecommendationSettings(){}
 
@@ -36,6 +41,12 @@ public class RecommendationSettings {
     }
 
     public ModelSettings getModelSettings() {
+        // If modelSettings is not set but flat models list is, wrap it on the fly
+        if (modelSettings == null && models != null) {
+            ModelSettings ms = new ModelSettings();
+            ms.setModels(models);
+            modelSettings = ms;
+        }
         return modelSettings;
     }
 
@@ -44,11 +55,32 @@ public class RecommendationSettings {
     }
 
     public TermSettings getTermSettings() {
+        // If termSettings is not set but flat terms list is, wrap it on the fly
+        if (termSettings == null && terms != null) {
+            termSettings = new TermSettings();
+            termSettings.setTerms(terms);
+        }
         return termSettings;
     }
 
     public void setTermSettings(TermSettings termSettings) {
         this.termSettings = termSettings;
+    }
+
+    public List<String> getTerms() {
+        return terms;
+    }
+
+    public void setTerms(List<String> terms) {
+        this.terms = terms;
+    }
+
+    public List<String> getModels() {
+        return models;
+    }
+
+    public void setModels(List<String> models) {
+        this.models = models;
     }
 
     @Override
@@ -57,6 +89,8 @@ public class RecommendationSettings {
                 "threshold=" + threshold +
                 ", modelSettings=" + modelSettings +
                 ", termSettings=" + termSettings +
+                ", terms=" + terms +
+                ", models=" + models +
                 '}';
     }
 }
