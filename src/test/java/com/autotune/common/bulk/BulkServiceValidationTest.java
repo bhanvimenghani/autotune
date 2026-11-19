@@ -15,9 +15,13 @@
  *******************************************************************************/
 package com.autotune.common.bulk;
 
+import com.autotune.analyzer.kruizeObject.TermSettings;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -185,5 +189,30 @@ class BulkServiceValidationTest {
         }
     }
 
+    @Nested
+    @DisplayName("Term Settings Validation Tests")
+    class TermSettingsValidationTests {
+
+        @Test
+        @DisplayName("Should accept lowercase terms")
+        void shouldAcceptLowercaseTerms() {
+            TermSettings termSettings = new TermSettings();
+            termSettings.setTerms(Arrays.asList("short", "medium", "long"));
+            assertEquals("", BulkServiceValidation.validateTermSettings(termSettings),
+                    "Lowercase terms should be accepted");
+        }
+
+        @Test
+        @DisplayName("Should reject non-lowercase terms")
+        void shouldRejectNonLowercaseTerms() {
+            for (String term : Arrays.asList("Short", "MEDIUM", "Long")) {
+                TermSettings termSettings = new TermSettings();
+                termSettings.setTerms(List.of(term));
+                String result = BulkServiceValidation.validateTermSettings(termSettings);
+                assertTrue(result.contains("Invalid term name: " + term),
+                        "Non-lowercase term '" + term + "' should be rejected, consistent with create experiment validation");
+            }
+        }
+    }
 
 }

@@ -59,7 +59,8 @@ public class BulkServiceValidation {
     private static final Set<AnalyzerConstants.ExperimentType> VALID_EXPERIMENT_TYPES = Set.of(
             AnalyzerConstants.ExperimentType.CONTAINER, AnalyzerConstants.ExperimentType.NAMESPACE);
 
-    // Valid model and term names (case-insensitive)
+    // Valid model names (case-insensitive) and term names (case-sensitive, lowercase only,
+    // matching the create experiment API validation)
     private static final List<String> VALID_MODELS = Arrays.asList(
             KruizeConstants.JSONKeys.PERFORMANCE,
             KruizeConstants.JSONKeys.COST,
@@ -283,7 +284,8 @@ public class BulkServiceValidation {
 
     /**
      * Validates the term_settings field if provided.
-     * Checks that terms array is not null/empty and all names are valid (case-insensitive).
+     * Checks that terms array is not null/empty and all names are valid (case-sensitive, lowercase only,
+     * consistent with the create experiment API validation).
      *
      * @param termSettings the term settings to validate (can be null)
      * @return an error message if validation fails; otherwise an empty string
@@ -300,7 +302,7 @@ public class BulkServiceValidation {
             if (term == null || term.trim().isEmpty()) {
                 return "term_settings.terms contains null or empty term name";
             }
-            if (!VALID_TERMS.contains(term.toLowerCase())) {
+            if (!VALID_TERMS.contains(term)) {
                 return "Invalid term name: " + term + ". Valid terms are: " + VALID_TERMS;
             }
         }
